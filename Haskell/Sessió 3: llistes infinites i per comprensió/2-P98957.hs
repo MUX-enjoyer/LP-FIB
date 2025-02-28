@@ -24,9 +24,28 @@ factors n = [x | x <- [2..floor $ sqrt $ fromIntegral n], mod n x == 0]
 
 primes :: [Integer]
 primes = [x | x <- [2..], null (factors x)]
+--També amb el garbell d'eratòstenes
+primes_garbell :: [Integer]
+primes_garbell = garbell [2..]
+    where
+        garbell (p : xs) = p : garbell [x | x <- xs, mod x p /= 0]
+
+
+isHamming :: Integer -> Bool
+isHamming x = all (`elem` [2, 3, 5]) (primeFactors x)
 
 hammings :: [Integer]
-hammings = [x | x <- [1..], (all (`elem` [2, 3, 5]) (factors x)), not (null (factors x))]
+hammings = [x | x <- [1..], isHamming x]
+
+primeFactors :: Integer -> [Integer]
+primeFactors n = factorize n 2
+    where
+        factorize n p
+            | p * p > n        = if n > 1 then [n] else []
+            | n `mod` p == 0   = p : factorize (n `div` p) p
+            | otherwise        = factorize n (p + 1)
+
 
 --lookNsay :: [Integer]
+--
 --tartaglia :: [[Integer]]
