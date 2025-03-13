@@ -36,8 +36,8 @@ instance Applicative Queue where
 
 instance Monad Queue
     where
-        return x = (Queue [x] [])
-        (Queue x y) >>= f = foldl merge create (map f (x ++ (reverse y)))  
+        return = pure
+        (Queue x y) >>= f = foldl (\(Queue acc1 acc2) q -> let (Queue q1 q2) = f q in Queue (acc1 ++ q1) (acc2 ++ q2)) (Queue [] []) (x ++ reverse y)
 
 kfilter :: (p -> Bool) -> Queue p -> Queue p
 kfilter f q = do
