@@ -19,5 +19,8 @@ data Forest a = Forest [Tree a]
 instance Functor Forest where
   fmap f (Forest l) = Forest (fmap (fmap f) l)
 
+instance (Show a) => Show (Forest a) where
+  show (Forest trees) = "Forest " ++ show trees
+
 doubleF :: (Num a) => Forest a -> Forest a
-doubleF f = fmap (* 2) f
+doubleF (Forest l) = Forest (fmap (fmap (* 2)) l)
