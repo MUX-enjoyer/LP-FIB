@@ -37,3 +37,16 @@ data LTree a = Leaf a | Node (LTree a) (LTree a)
 instance Show a => Show (LTree a) where 
     show (Leaf x) = "{" ++ show x ++ "}"
     show (Node l r) = "<" ++ show l ++ "," ++ show r ++ ">"
+
+build :: [a] -> LTree a
+build [x] = Leaf x
+build xs = Node (build left) (build right)
+    where (left, right) = splitAt ((length xs + 1) `div` 2) xs
+
+zipLTrees :: LTree a -> LTree b -> Maybe (LTree (a, b))
+zipLTrees (Leaf x1) (Leaf x2) = Just (Leaf (x1, x2))
+zipLTrees (Node l1 r1) (Node l2 r2) = do
+    left <- zipLTrees l1 l2
+    right <- zipLTrees r1 r2
+    return (Node left right)
+zipLTrees _ _ = Nothing
