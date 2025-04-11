@@ -25,4 +25,5 @@ returnNeighbor (a, b) n
 -- Implementeu sense recursivitat una funció neighbors :: Ord a => [(a, a)] -> a -> [a]
 -- que retorni els veïns d’un vèrtex donat en ordre creixent.
 neighbors :: Ord a => [(a, a)] -> a -> [a]
-neighbors l n = foldr (\x acc -> returnNeighbor x n ++ acc) [] (sort l)
+neighbors l n = sort (foldr (\x acc -> returnNeighbor x n ++ acc) [] l)
+
